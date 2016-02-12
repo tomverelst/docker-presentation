@@ -333,3 +333,69 @@ body {
 .orange {
     color: #e98300;
 }
+
+.red {
+    color: rgb(175,66,66);
+}
+
+.pink {
+    color: rgb(252,157,154);
+}
+
+.reveal div.block {
+    padding: 0.5em;
+    margin: 0.5em;
+    border-radius: 0.2em;
+}
+
+.vm {
+    display: inline-block;
+    width: 30%
+}
+
+.container {
+    display: inline-block;
+    width: 24%
+}
+
+.app {
+    background-color: rgb(124,204,228);
+}
+
+.image,
+.bins {
+    background-color: rgb(84,194,228);
+}
+
+.guestos{
+    background-color: rgb(30,178,223);
+}
+
+.daemon,
+.hypervisor,
+.baseimage{
+    background-color: rgb(255,147,30);
+    color: white;
+}
+
+.writablecontainer,
+.kernel {
+    background-color: rgb(175,66,66);
+    color: white;
+}
+
+.bootfs,
+.infrastructure {
+    background-color: gray;
+    color: white;
+}
+
+.reveal pre.bigger {
+    font-size: 0.8em;
+}
+.reveal table th.center,
+.reveal table td.center,
+.center span,
+.center {
+  text-align: center;
+}

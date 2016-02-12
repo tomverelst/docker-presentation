@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>CloudFoundry - An Introduction</title>
+    <title>Docker Introduction</title>
     <link rel="stylesheet" href="css/reveal.css">
     <link rel="stylesheet" href="css/theme/ordina.css" id="theme">
     <link rel="stylesheet" href="lib/css/zenburn.css">
@@ -15,472 +15,656 @@
 <div class="reveal">
     <div class="slides">
         <section>
+
             <h3>Introduction to</h3>
 
-            <img src="img/cf-logo.png" class="transparent"/>
+            <img src="img/docker-transparent.png" width="400" class="transparent"/>
 
-            <div style="margin-top: 5em">
                 <h5>
-                    <p>by <span class="blue">Dieter Hubau</span> and <span class="blue">Maarten Fuchs</span></p>
+                    <p>by <span class="blue">Tom Verelst</span></p>
 
-                    <p>Cloud and PaaS Competence Center</p>
+                    <p>Automation &amp; Tooling Competence Center</p>
 
                     <p>© 2016 <span class="orange">JWorks</span></p>
 
                     <img src="img/ordina-logo.png" class="transparent" style="width: 25%"/>
                 </h5>
-            </div>
         </section>
         <section>
-            <h3>Why are we here</h3>
 
-            <img src="img/question.png" class="transparent"/>
-
-            <p class="fragment">Introduce the <span class="orange">concept</span> of PaaS</span></p>
-
-            <p class="fragment">Explain <span class="blue">why we need more PaaS adoption</span></p>
-
-            <p class="fragment">Discover <span class="orange">Cloud Foundry</span></p>
-
-            <p class="fragment">Highlight the Cloud Foundry <span class="blue">Architecture</span></p>
+          <h3>Before we begin...</h3>
+          <p>
+            Join <a href="https://tlk.io/ordina-docker" target="_blank">https://tlk.io/ordina-docker</a>
+          </p>
+          <img src="img/docker-networking-turtles.png" class="transparent" width="350" />
         </section>
         <section>
-            <h3>What is <span class="blue">Platform as a service</span></h3>
+            <h3>What is <span class="blue">Docker</span>?</h3>
 
-            <img src="img/derp.png" class="transparent"/>
+            <img src="img/docker-transparent.png" width="400" class="transparent"/>
 
-            <p class="fragment">A <span class="blue">cloud computing</span> service offering</p>
-
-            <p class="fragment">Allows you to <span class="orange">manage and run applications</span></p>
-
-            <p class="fragment"><span class="blue">Without worrying</span> about infrastructure</p>
+            <table>
+                <td  style="text-align: center;" width="200" class="fragment">
+                    <img src="img/build.png" class="transparent"/>
+                    <p style="text-align: center;">Build</p>
+                </td>
+                <td  style="text-align: center;" width="200" class="fragment">
+                    <img src="img/ship.png" class="transparent"/>
+                    <p style="text-align: center;">Ship</p>
+                </td>
+                <td  style="text-align: center;" width="200" class="fragment">
+                    <img src="img/run.png" class="transparent"/>
+                    <p style="text-align: center;">Run</p>
+                </td>
+            </table>
         </section>
         <section>
             <section>
-                <h3>Where does a paas live</h3>
+                <h3>What is a <span class="blue">container</span>?</h3>
 
-                <img src="img/cloud.png" class="fragment transparent"/>
+                <img src="img/container_icon-300x300.png" class="transparent"/>
+
+                <p class="fragment">Contains the complete <span class="blue">runtime environment</span></p>
+
+                <p class="fragment"><span class="orange">Application</span></p>
+
+                <p class="fragment"><span class="orange">Dependencies</span></p>
+            </section>
+
+            <section>
+                <p>It <span style="font-style:italic">feels</span> like a</p>
+
+                <h3><p class="blue">lightweight virtual machine</p></h3>
+
+                <p class="fragment">It has a <span class="orange">shell</span> (SSH, ...)</p>
+
+                <p class="fragment">Has its own <span class="orange">namespace</span></p>
+
+                <p class="fragment">Has its own <span class="orange">network interface</span></p>
+
+                <p class="fragment">Run stuff as <span class="red">root</span></p>
+
+                <p class="fragment"><span class="orange">Services</span></p>
+
+                <p class="fragment"><span class="orange">Packages</span></p>
+
+                <p class="fragment">But if it's not a VM, so <span class="blue">what's the difference?</span></p>
+            </section>
+            <section>
+
+                <h3><span class="blue">Virtual machines</span></h3>
 
                 <div>
-                    <img src="img/iaas.png" class="fragment transparent"/>
-                    <img src="img/paas.png" class="fragment transparent"/>
-                    <img src="img/saas.png" class="fragment transparent"/>
+                    <div class="vm fragment" data-fragment-index="4">
+                        <div class="app block">App</div>
+                        <div class="bins block">bins/libs</div>
+                        <div class="guestos block">Guest OS</div>
+                    </div>
+                    <div class="vm fragment" data-fragment-index="4">
+                        <div class="app block">App</div>
+                        <div class="bins block">bins/libs</div>
+                        <div class="guestos block">Guest OS</div>
+                    </div>
+                    <div class="vm fragment" data-fragment-index="4">
+                        <div class="app block">App</div>
+                        <div class="bins block">bins/libs</div>
+                        <div class="guestos block">Guest OS</div>
+                    </div>
                 </div>
-                <img src="img/finger-point-up.png" class="fragment transparent"/>
-            </section>
-            <section>
-                <h3>Infrastructure as a service</h3>
 
-                <img src="img/iaas.png" class="transparent"/>
+                <div class="hypervisor block fragment" data-fragment-index="3">Hypervisor</div>
+                <div class="kernel block fragment" data-fragment-index="2">Host OS / Kernel</div>
+                <div class="infrastructure block fragment" data-fragment-index="1">Infrastructure</div>
 
-                <p class="fragment">resources are distributed <span class="orange">as a service</span></p>
+            </section>
 
-                <p class="fragment">allows for <span class="blue">dynamic scaling</span></p>
+            <section>
 
-                <p class="fragment"><span class="orange">variable cost</span> pricing (like utilities)</p>
+                <h3><span class="blue">Containers</span></h3>
 
-                <p class="fragment">usually <span class="blue">multiple users</span> on single piece of hardware</p>
-            </section>
-            <section>
-                <h3>Amazon Web Services</h3>
-                <img src="img/aws.png" alt="Amazon Web Services" class="transparent"/>
-            </section>
-            <section>
-                <h3>Windows Azure</h3>
-                <img src="img/azure.png" alt="Azure" class="transparent"/>
-            </section>
-            <section>
-                <h3>OpenStack</h3>
-                <img src="img/openstack.png" alt="OpenStack" class="transparent"/>
-            </section>
-            <section>
-                <h3>VMWare</h3>
-                <img src="img/vmware.png" alt="VMWare" class="transparent"/>
-            </section>
-            <section>
-                <h3>Google Compute Engine</h3>
-                <img src="img/gce.png" alt="Google Compute Engine" class="transparent"/>
-            </section>
-            <section>
-                <h3>Platform as a service</h3>
+                <p class="fragment" data-fragment-index="6">
+                    <span class="orange">Processes</span> that share the same <span class="red">kernel</span>
+                </p>
 
-                <img src="img/paas.png" class="transparent"/>
+                <div>
+                    <div class="container fragment" data-fragment-index="4">
+                        <div class="app block">App</div>
+                        <div class="bins block">bins/libs</div>
+                    </div>
+                    <div class="container fragment" data-fragment-index="4">
+                        <div class="app block">App</div>
+                        <div class="bins block">bins/libs</div>
+                    </div>
+                    <div class="container fragment" data-fragment-index="4">
+                        <div class="app block">App</div>
+                        <div class="bins block">bins/libs</div>
+                    </div>
+                    <div class="container fragment" data-fragment-index="5">
+                        <div class="daemon block">Daemon</div>
+                    </div>
+                </div>
 
-                <p class="fragment"><span class="blue">this is why you are here...</span></p>
-            </section>
-            <section>
-                <h3>Software As A Service</h3>
-                <img src="img/saas.png" class="transparent"/>
+                <div class="kernel block fragment" data-fragment-index="2">Kernel</div>
+                <div class="infrastructure block fragment" data-fragment-index="1">Infrastructure</div>
 
-                <p class="fragment">network access to, and mgmt of <span
-                        class="orange">commercially available software</span></p>
-
-                <p class="fragment">managed from central locations and <span
-                        class="blue">available remotely via the web</span></p>
-
-                <p class="fragment">single instance, <span class="orange">multi-tenant </span>architecture</p>
-
-                <p class="fragment">centralized feature updating</p>
-            </section>
-            <section>
-                <h3>CRM SAAS</h3>
-                <img src="img/salesforce.png" alt="Salesforce" class="transparent"/>
-            </section>
-            <section>
-                <h3>Productivity SAAS</h3>
-                <img src="img/office-365.png" alt="Office 365" class="transparent"/>
-            </section>
-            <section>
-                <h3>Email SAAS</h3>
-                <img src="img/hotmail.png" alt="Hotmail" class="transparent"/>
-            </section>
-            <section>
-                <h3>Email SAAS</h3>
-                <img src="img/gmail.png" alt="GMail" class="transparent"/>
-            </section>
-            <section>
-                <h3>Chat SAAS</h3>
-                <img src="img/slack.png" alt="Slack" class="transparent"/>
-            </section>
-            <section>
-                <h3>Source Control SAAS</h3>
-                <img src="img/github.png" alt="Github" class="transparent"/>
-            </section>
-            <section>
-                <h3>Compared to IaaS and SaaS</h3>
-                <img src="img/saas_paas_iaas.png" class="transparent"/>
-
-                <table>
-                    <tr class="fragment">
-                        <th>vs</th>
-                        <th colspan="2">PAAS</th>
-                    </tr>
-                    <tr class="fragment">
-                        <td>IAAS</td>
-                        <td class="blue fragment">More Abstraction</td>
-                        <td class="orange fragment">Less Control</td>
-                    </tr>
-                    <tr class="fragment">
-                        <td>SAAS</td>
-                        <td class="orange fragment">Less Abstraction</td>
-                        <td class="blue fragment">More Control</td>
-                    </tr>
-                </table>
             </section>
         </section>
+
+
+
         <section>
             <section>
-                <h3>Which services should a paas offer</h3>
+                <h1><span class="blue">Docker</span> Architecture</h1>
+            </section>
 
+            <section>
+                <h3><span class="blue">Basic Docker Workflow</span></h3>
+                <img src="img/architecture.svg" class="transparent" />
+            </section>
+
+            <section>
+                <h3><span class="blue">Docker Host</span></h3>
+                <p>Docker Daemon</p>
+                <p>Docker Remote API (REST)</p>
+                <p>unix:///var/run/docker.sock</p>
+                <p>https://dockerhost:2376</p>
+                <p>Downloads and runs the containers</p>
+            </section>
+
+            <section>
+                <h3><span class="blue">Docker Client</span></h3>
+                <p>Talks to Docker daemon</p>
+                <img src="img/engine.png" class="transparent" />
+            </section>
+
+            <section>
+                <h3><span class="blue">Docker Registry</span></h3>
+                <p>Image repository</p>
+                <p>Official Docker Registry @ <a href="https://hub.docker.com/" target="_blank">hub.docker.com</a></p>
+                <p>As a service @ <a href="https://hub.docker.com/enterprise/" target="_blank">Docker Trusted Registry</a></p>
+                <p>Host your own @ <a href="https://github.com/docker/distribution" target="_blank">github.com/docker/distribution</a></p>
+            </section>
+
+            <section>
+                <h3><span class="orange">Docker image</span></h3>
+                <p>Basis for each container</p>
+                <p>Layers</p>
+            </section>
+
+            <section>
+                <h3><span class="orange">Layers</span></h3>
+                <p class="fragment">Top layer is thrown away when container stops</p>
+                <div class="block fragment writablecontainer" data-fragment-index="5">Writeable Container</div>
+                <div class="block fragment image" data-fragment-index="4">Image: My application</div>
+                <div class="block fragment image" data-fragment-index="3">Image: Java 8</div>
+                <div class="block fragment baseimage" data-fragment-index="2">Base Image: Ubuntu</div>
+                <div class="block fragment bootfs" data-fragment-index="1">bootfs (Kernel)</div>
+            </section>
+
+            <section>
+              <h3><span class="blue">Content Addressable Image IDs</span></h3>
+              <p class="fragment">Previously random UUIDs</p>
+              <p class="fragment">Secure hash of image and layer data (SHA-256)</p>
+              <p class="fragment">Separation of images and layers</p>
+              <p class="fragment">ID collision prevention</p>
+              <p class="fragment">Data integrity</p>
+              <p class="fragment"><span class="red">Migration needed from pre-1.10</span></p>
+
+            </section>
+
+            <section>
+                <h3><span class="orange">Volumes</span></h3>
+                <p style="margin-top: 1.5em" class="fragment"><span class="blue">Write</span> and <span class="blue">read</span> data from outside</p>
+                <p class="fragment">Mount <span class="red">local</span> folders onto the container</p>
+                <p class="fragment">Docker Volume drivers available</p>
+            </section>
+
+        </section>
+
+        <section>
+            <section>
+                <h1>Basic <span class="blue">Docker</span></h1>
+                <img src="img/docker-whale.png" class="transparent" />
+            </section>
+
+            <section>
+                <h3><span class="blue">Demo time!</span></h3>
+                <img src="img/finally.gif" class="transparent" />
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h2 class="blue">Commands</h2>
+            </section>
+            <section>
+                <h3><span class="pink">Dockerfile</span></h3>
+                <p>Instructions to automate building of your image</p>
+                <p>Steps are cached for fast-reuse</p>
+                <pre>
+                    <code>
+                        FROM java:8
+
+                        COPY target/application.jar app.jar
+
+                        ENTRYPOINT ["java", "-jar", "app.jar"]
+                    </code>
+                </pre>
+            </section>
+
+            <section>
+                <h3>Basic <span class="blue">Docker</span> commands</h3>
+                <pre class="bigger fragment">
+<span class="hljs-comment"># Build the image in the working directory</span>
+$ docker build -t myapp .
+                </pre>
+                <pre class="bigger fragment">
+<span class="hljs-comment"># Run the image we just built as a container</span>
+$ docker run --name mycontainer myapp
+                </pre>
+                <pre class="bigger fragment">
+<span class="hljs-comment"># Stop the container</span>
+$ docker stop mycontainer
+                </pre>
+                <pre class="bigger fragment">
+<span class="hljs-comment"># Start the container again</span>
+$ docker start mycontainer
+                </pre>
+
+            </section>
+
+            <section>
+                <h3>Manage containers and images</h3>
+                   <pre class="bigger fragment">
+<span class="hljs-comment"># List running containers</span>
+$ docker ps
+                </pre>
+                   <pre class="bigger fragment">
+<span class="hljs-comment"># List all containers, including stopped</span>
+$ docker ps -a
+                </pre>
+
+               <pre class="bigger fragment">
+<span class="hljs-comment"># List all images</span>
+$ docker images
+                </pre>
+
+                <pre class="bigger fragment">
+<span class="hljs-comment"># Remove an image</span>
+$ docker rmi myapp
+                </pre>
+            </section>
+
+            <section>
+                <h3>Push <span class="blue">Docker</span> images to the registry</h3>
+   <pre class="bigger fragment">
+<span class="hljs-comment"># Login to Docker Registry</span>
+$ docker login --username=tomverelst --email=tom.verelst@ordina.be
+                </pre>
+                <pre class="bigger fragment">
+<span class="hljs-comment"># Push the image to the Docker Registry</span>
+$ docker push myapp
+                </pre>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h3>How do <span class="blue">containers</span> really work?</h3>
+
+                <img src="img/magic.gif" class="fragment transparent" />
+            </section>
+
+            <section>
+                <div style="margin-top: 1.5em">
+                    <h3><span class="red">Warning</span></h3>
+                    <p>Real low-level Linux stuff ahead!</p>
+                    <img src="img/headache.gif" class="transparent" />
+                </div>
+            </section>
+
+            <section>
+                <h3>Back to <span class="orange">2007</span>, <span class="red">Kernel 2.6.24</span></h3>
+                <div class="fragment" style="margin-top: 1.5em">
+                    <p><span class="blue">Control Groups</span> aka cgroups</p>
+                    <p>Kernel feature</p>
+                </div>
+                <div class="fragment" style="margin-top: 1.5em">
+                    <p><span class="blue">Linux Containers</span> aka lxc</p>
+                    <p>Linux package that uses cgroups</p>
+                </div>
+            </section>
+
+            <section>
+                <h3><span class="blue">Control group</span></h3>
+                <p>Resource limiting</p>
+                <p>Prioritization</p>
+                <p>Accounting</p>
+                <p>Controlling</p>
+            </section>
+
+            <section>
+                <h3><span class="blue">Linux Containers</span></h3>
+                <p>Package</p>
+                <p>Different on different Linux distro's</span>
+            </section>
+
+            <section>
+                <h3><span class="blue">Redesign in 2013</span></h3>
+                <h3>Kernel 3.15 and 3.16</h3>
                 <div class="fragment">
-                    <p>What are the <span class="orange">criteria</span> for evaluating Paas providers?</p>
-
-                    <img src="img/criteria.png" class="transparent"/>
-                </div>
-
-                <p class="fragment">
-                    <img src="img/acquia.png" class="transparent"/>
-                </p>
-
-                <h3 class="fragment">"The <span class="orange">10 Layers Of PaaS"</span></h3>
-            </section>
-
-            <section>
-                <h3>5 layers of Paas <span class="blue">Infrastructure</span></h3>
-
-                <img src="img/infrastructure.ico" class="transparent"/>
-
-                <p class="fragment"><span class="orange">Virtual resources</span> - IaaS is a key building block</p>
-
-                <p class="fragment"><span class="blue">High availability </span>- data backup and disaster recovery</p>
-
-                <p class="fragment"><span class="orange">Scalability</span> - increases in load and site traffic</p>
-
-                <p class="fragment"><span class="blue">Maintenance &amp; optimization </span>- tuning of web and
-                    database layer</p>
-
-                <p class="fragment"><span class="orange">Monitoring </span>- catch performance degradation or security
-                    threats</p>
-            </section>
-            <section>
-                <h3>5 layers of Paas <span class="orange">App Development</span></h3>
-
-                <img src="img/application-development.png" alt="Application Development" class="transparent">
-
-                <p class="fragment"><span class="blue">Continuous delivery </span>- separate environments, test
-                    automation, quality assurance</p>
-
-                <p class="fragment"><span class="orange">Application maintenance </span>- software and security
-                    updates
-                </p>
-
-                <p class="fragment"><span class="blue">Integration with third-party tools </span>- web services,
-                    databases, etc.</p>
-
-                <p class="fragment">Application and infrastructure <span class="orange">support services</span></p>
-
-                <p class="fragment">Support for <span class="blue">different development languages</span></p>
-            </section>
-        </section>
-        <section>
-            <section>
-                <h3>Why do we need paas</h3>
-                <img src="img/business-value.png" class="transparent"/>
-
-                <h3 class="fragment">What are the <span class="orange">business drivers</span> ?</h3>
-            </section>
-            <section>
-                <h3>Business Drivers for Paas</h3>
-
-                <div style="width: 100%">
-                    <div class="fragment" style="float: left; width: 33%">
-                        <img src="img/innovation.png" class="transparent"/>
-
-                        <h4>Innovation</h4>
-                    </div>
-                    <div class="fragment" style="float: left; width: 33%">
-                        <img src="img/time-to-market.png" class="transparent"/>
-
-                        <h4>Time To Market</h4>
-                    </div>
-
-                    <div class="fragment" style="float: left; width: 33%">
-                        <img src="img/cost-reduction.png" class="transparent"/>
-
-                        <h4>Cost Reduction</h4>
-                    </div>
+                    <h3><span class="orange">Namespace isolation</span></h3>
+                    <p>PID namespace</p>
+                    <p>Network namespace</p>
+                    <p>Hostname</p>
+                    <p>Mount namespace</p>
+                    <p>Inter-process communication namespace</p>
+                    <p>User namespace</p>
                 </div>
             </section>
+
             <section>
-                <h3>Paas Facilitates <span class="orange">Innovation</span></h3>
-                <img src="img/innovation.png" alt="Innovation" class="transparent"/>
-
-                <p class="fragment">It's a tool which enables <span class="orange">Enterprise DevOps</span></p>
-
-                <p class="fragment">High level of <span class="blue">standardization and automation</span></p>
-
-                <p class="fragment">Cost of <span class="orange">mistakes</span> is reduced</p>
-
-                <p class="fragment"><span class="blue">Experimentation</span> becomes a possibility</p>
-            </section>
-            <section>
-                <h3>Paas Decreases Time To Market</h3>
-                <img src="img/time-to-market.png" alt="Time To Market" class="transparent"/>
-
-                <p class="fragment">Keeps the <span class="orange">developer focus</span> on the applications</p>
-
-                <p class="fragment">Streamlines <span class="blue">IT Operations</span> and speeds up processes</p>
-
-                <p class="fragment">With <span class="orange">faster release cycles</span> as a result</p>
-            </section>
-            <section>
-                <h3>Paas Brings Cost Reduction</h3>
-                <img src="img/cost-reduction.png" alt="Cost Reduction" class="transparent"/>
-
-                <p class="fragment"><span class="blue">Elasticity</span> of servers, storage and network bandwidth</p>
-
-                <p class="fragment"><span class="orange">Software maintenance </span>is handled by the platform</p>
-
-                <p class="fragment">So IT Operations can <span class="orange">avoid daily routine tasks</span></p>
+                <h3>First <span class="blue">Docker</span> release in <span class="orange">2013</span></h3>
+                <p>Depended on LXC</p>
+                <p>Now abstracted with <span class="blue">libcontainer</span></p>
             </section>
         </section>
+
         <section>
-            <h3>Some Examples of Paas</h3>
-
-            <img src="img/heroku.png" class="fragment transparent"/>
-            <img src="img/gae.png" class="fragment transparent"/>
-            <img src="img/elastic-beanstalk.png" class="fragment transparent"/>
-            <img src="img/openshift.png" class="fragment transparent"/>
-
-            <p class="fragment">But that's not why we're here tonight...</p>
+            <section>
+                <h2><span class="blue">Benefits of containerisation</span></h2>
+            </section>
+            <section>
+              <h3><span class="blue">Scaling</span></h3>
+            </section>
+            <section>
+              <h3><span class="blue">Immutable Infrastructure</span></h3>
+              <img src="img/docker-lego.jpg" class="transparent" />
+            </section>
+            <section>
+              <h2><span class="blue">DevOps</span></h2>
+              <div class="fragment" style="display: inline-block; width: 45%;">
+                <h3 style="margin-top: 1.5em;"><span class="orange">Dev</span></h3>
+                <p>Application and dependencies</p>
+                <p>Inside of the container</p>
+              </div>
+              <div class="fragment" style="display: inline-block; width: 45%;">
+                <h3 style="margin-top: 1.5em;"><span class="orange">Ops</span></h3>
+                <p>Infrastructure</p>
+                <p>Outside of the container</p>
+              </div>
+            </section>
+            <section>
+              <h3><span class="blue">Continuous Integration</span></h3>
+              <p class="fragment">Same artifact for all environments</p>
+              <p class="fragment">No more "It worked on my laptop"</p>
+              <p class="fragment">Run your builds and tests inside containers</p>
+            </section>
         </section>
-        <section>
-            <h3>Introducing</h3>
 
-            <img src="img/cf-logo.png" class="transparent"/>
+        <section>
+            <h1><span class="blue">Orchestration</span></h1>
+
+            <table>
+              <tr>
+                <td class="fragment" data-fragment-index="1"><img src="img/docker-compose.png" class="transparent" /></td>
+                <td class="fragment" data-fragment-index="2"><img src="img/docker-machine.png" class="transparent" /></td>
+                <td class="fragment" data-fragment-index="3"><img src="img/docker-swarm.png" class="transparent" width="400" /></td>
+                <td class="fragment" data-fragment-index="4"><img src="img/docker-networking-turtles.png" width="400" class="transparent" /></td>
+              </tr>
+              <tr>
+                <td class="fragment center" data-fragment-index="1"><span class="orange">Compose</span></td>
+                <td class="fragment center" data-fragment-index="2"><span class="orange">Machine</span></td>
+                <td class="fragment center" data-fragment-index="3"><span class="orange">Swarm</span></td>
+                <td class="fragment center" data-fragment-index="4"><span class="orange">Networking</span></td>
+              </tr>
+            </table>
         </section>
+
         <section>
-            <h3>What is Cloud Foundry?</h3>
-
-            <p class="fragment"><span class="blue">Industry standard </span>platform for cloud applications</p>
-
-            <p class="fragment"><span class="orange">Open Source</span> platform for <span class="blue">application lifecycle automation</span>
-            </p>
-
-            <p class="fragment"><span class="blue">Fastest growing</span> open source company in the world</p>
-
-            <p class="fragment"><span class="orange">Provides</span> build, test, deploy and scaling <span
-                    class="orange">capabilities</span></p>
-
-            <p class="fragment">Works with any* languages or framework</p>
+          <section>
+              <h2><span class="blue">Compose</span></h2>
+              <img src="img/docker-compose.png" class="transparent" />
+              <p><span class="orange">Define and run multi-container applications</span></p>
+              <p><span class="orange">Single host</span></p>
+              <p><span class="red">Multi-host experimental</span></p>
+          </section>
         </section>
+
         <section>
-            <h3>Cloud Foundry <span class="blue">Foundation</span></h3>
+            <section>
+                <h2><span class="blue">Machine</span></h2>
+                <img src="img/docker-machine.png" class="transparent" />
+                <p><span class="orange">Create and provision machines as Docker hosts</span></p>
+            </section>
+            <section>
+              <div style="display: inline;">
+                <img src="img/docker-machine.png" class="transparent" />
+              </div>
+              <div style="display:inline; position: relative;">
+                <img src="img/baby-dockers.png" class="transparent fragment" data-fragment-index="1" />
+                <img src="img/container.gif" class="transparent fragment" data-fragment-index="2"
+                  width="100" style="position: absolute; top: -180px; left: 80px;" />
+                <img src="img/container.gif" class="transparent fragment" data-fragment-index="3"
+                  width="100" style="position: absolute; top: -160px; left: 150px;" />
+                <img src="img/container.gif" class="transparent fragment" data-fragment-index="4"
+                 width="100" style="position: absolute; top: -260px; left: 200px;" />
+              </div>
+              <p class="fragment" data-fragment-index="1"><span class="orange">Create new Docker hosts</span></p>
+              <p class="fragment" data-fragment-index="2"><span class="orange">Run containers on these new hosts</span></p>
+            </section>
+            <section>
+              <h2><span class="blue">Drivers</span></h2>
 
-            <p class="fragment">Includes <span class="orange">major sponsors</span></p>
+              <div>
+                <div style="vertical-align: middle; display: inline-block;">
+                  <img width="150" src="img/aws.png" class="transparent" />
+                </div>
 
-            <hr class="fragment"/>
+                <div style="vertical-align: middle; display: inline-block;">
+                  <img width="150" src="img/azure.png" class="transparent" />
+                </div>
 
-            <p class="fragment">EMC (Pivotal and VMWare)</p>
+                <div style="vertical-align: middle; display: inline-block;">
+                  <img width="150" src="img/gce.png" class="transparent" />
+                </div>
 
-            <p class="fragment">HP</p>
+                <div style="vertical-align: middle; display: inline-block;">
+                  <img width="150" src="img/vmware.png" class="transparent" />
+                </div>
+              </div>
 
-            <p class="fragment">IBM</p>
+              <div>
+                <div style="vertical-align: middle; display: inline-block;">
+                  <img width="150" src="img/digital-ocean.png" class="transparent" />
+                </div>
 
-            <p class="fragment">Intel</p>
+                <div style="vertical-align: middle; display: inline-block;">
+                  <img width="150" src="img/openstack.png" class="transparent" />
+                </div>
 
-            <p class="fragment">SAP</p>
+                <div style="vertical-align: middle; display: inline-block;">
+                  <img width="150" src="img/rackspace.png" class="transparent" />
+                </div>
 
-            <p class="fragment">Swisscom</p>
+                <div style="vertical-align: middle; display: inline-block;">
+                  <img width="150" src="img/virtualbox.png" class="transparent" />
+                </div>
+              </div>
 
-            <p class="fragment">...</p>
+              <div>
+                <div style="vertical-align: middle; display: inline-block;">
+                  <img width="150" src="img/hyperv.png" class="transparent" />
+                </div>
+
+                <div style="vertical-align: middle; display: inline-block;">
+                  <img width="150" src="img/exoscale.png" class="transparent" />
+                </div>
+
+                <div style="vertical-align: middle; display: inline-block;">
+                  <img width="150" src="img/ibmsoftlayer.png" class="transparent" />
+                </div>
+              </div>
+            </section>
         </section>
+
         <section>
-            <h3>Flavours of Cloud Foundry</h3>
+            <section>
+                <h2><span class="blue">Swarm</span></h2>
+                <img src="img/docker-swarm.png" class="transparent" width="250" />
+                <p><span class="orange">Clustering tool</span></p>
+                <p><span class="orange">Turn multiple hosts into one virtual host</span></p>
+                <p><span class="orange">Service discovery</span></p>
+                <p><span class="orange">Scheduling</span></p>
+            </section>
+            <section>
+              <img src="img/docker-swarm-manager.png" class="transparent" />
+            </section>
+            <section>
+              <h3><span class="orange">Labels</span></h3>
+              <p>Define custom labels to your <span class="blue">Docker</span> host</p>
+              <pre class="fragment">
+                  <code class="bash">$ docker daemon --label env="production" --label storage="ssd"</code>
+              </pre>
 
-            <img src="img/flavours.png" class="transparent"/>
+              <pre class="fragment">
+                  <code class="bash">$ docker-machine --engine-label env="production" --label storage="ssd"</code>
+              </pre>
 
-            <p class="fragment" style="color: orangered">Open Source Software</p>
-
-            <p class="fragment" style="color: limegreen">Vendored Distribution</p>
-
-            <p class="fragment" style="color: chocolate">Private Service</p>
-
-            <p class="fragment" style="color: lightpink">Public Service</p>
+              <pre class="fragment">
+                  <code class="bash">$ docker run -e constraint:env==production -e constraint:storage==ssd ...</code>
+              </pre>
+            </section>
+            <section>
+              <h2><span class="blue">Filters</span></h2>
+              <div class="fragment" style="display: inline-block; width: 45%;">
+                <h3 style="margin-top: 1.5em;"><span class="orange">Node</span></h3>
+                <p>Constraint</p>
+                <p>Health</p>
+                <p>&nbsp;</p>
+              </div>
+              <div class="fragment" style="display: inline-block; width: 45%;">
+                <h3 style="margin-top: 1.5em;"><span class="orange">Container</span></h3>
+                <p>Affinity</p>
+                <p>Port</p>
+                <p>Dependency</p>
+              </div>
+            </section>
         </section>
-        <section>
-            <h3>Open Source Software</h3>
 
+        <section>
+          <section>
+              <h2><span class="blue">Networking</span></h2>
+              <img src="img/docker-networking-turtles.png" class="transparent" width="250" />
+              <p><span class="orange">Create overlay networks</span></p>
+              <p><span class="orange">Replaces links (bridge)</span></p>
+              <p><span class="orange">Network plugins (Weave)</span></p>
+              <p><span class="orange">Embedded DNS server</span></p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h5><span class="orange">Compose + Swarm Production Ready?</span></h5>
+            <h3 class="fragment"><span class="red">Nope</span></h3>
             <div class="fragment">
-                <img src="img/github.png" class="transparent"/>
-
-                <p>Available on Github as <span class="blue">cf-release</span></p>
+              <img src="img/compose-issue.png" class="transparent" width="450" />
+              <img src="img/compose-issue-cause.png" class="transparent"  width="450" />
+              <a href="https://github.com/docker/compose/issues/2866" target="_blank">https://github.com/docker/compose/issues/2866</a>
             </div>
-
-            <p class="fragment">Requires knowledge of <span class="orange">Bosh</span></p>
+            <img src="img/facepalm.gif" width="800" class="transparent fragment" style="position: absolute; top: 200px; left:140px;" />
+          </section>
         </section>
+
         <section>
-            <h3>Vendored Distribution</h3>
-
-            <div><img src="img/pivotal.png" class="transparent fragment"/></div>
-
-            <div><img src="img/helion.PNG" class="transparent fragment"/></div>
+          <section>
+            <img src="img/docker-cloud.png" class="transparent" />
+            <p><a href="https://cloud.docker.com/" target="_blank">https://cloud.docker.com/</a></p>
+            <p>(Tutum: <a href="https://www.tutum.co/" target="_blank">https://www.tutum.co/</a>)</p>
+          </section>
         </section>
+
         <section>
-            <h3>Private Service</h3>
-
-            <div><img src="img/sap-hana.png" class="transparent fragment"/></div>
-
-            <div><img src="img/bluemix.png" class="transparent fragment"/></div>
+          <h1><span class="blue">Tools</span></h1>
+          <img src="img/tools.png" class="transparent" />
         </section>
+
         <section>
-            <h3>Public Service</h3>
-
-            <div><img src="img/swisscom.png" class="transparent fragment"/></div>
-
-            <div><img src="img/bluemix.png" class="transparent fragment"/></div>
-
-            <div><img src="img/pivotal-ws.png" class="transparent fragment"/></div>
-
-            <div><img src="img/anynines.png" class="transparent fragment"/></div>
+          <section>
+            <h1><span class="blue">Kubernetes</span></h1>
+           <img src="img/kubernetes.png" class="transparent" width="500" />
+          </section>
+          <section>
+            <img src="img/kubernetes-overview.png" class="transparent" />
+          </section>
         </section>
+
         <section>
-            <h3><span class="orange">Key Benefits </span>of Cloud Foundry</h3>
-
-            <p class="fragment">Application Portability</p>
-
-            <p class="fragment">Application auto-scaling</p>
-
-            <p class="fragment">Centralized platform administration</p>
-
-            <p class="fragment">Centralized logging</p>
-
-            <p class="fragment">Dynamic Routing</p>
-
-            <p class="fragment">Application Health Management</p>
-
-            <p class="fragment">Integration with Elasticsearch and Logstash</p>
-
-            <p class="fragment">Role-based access for deployed applications</p>
-
-            <p class="fragment">Provision for horizontal and vertical scaling</p>
-
-            <p class="fragment">Infrastructure security</p>
-
-            <p class="fragment">Support for various IaaS providers</p>
+          <section>
+           <img src="img/coreos.png" class="transparent" width="500" />
+          </section>
+          <section>
+            <img src="img/coreos-architecture.svg" class="transparent" />
+          </section>
         </section>
+
         <section>
-            <h3>Cloud Foundry subsystems</h3>
-
-            <img src="img/architecture.png" class="transparent"/>
-
-            <p class="fragment"><span class="orange">Bosh </span>creates and deploys VMs on any IaaS</p>
-
-            <p class="fragment"><span class="blue">Cloud Controller </span>manages application lifecycles on those VMs
-            </p>
-
-            <p class="fragment"><span class="orange">(Go)Router </span>routes incoming traffic to the correct VMs</p>
+          <section>
+            <h1><span class="blue">Lattice</span></h1>
+           <img src="img/lattice.png" class="transparent" width="500" />
+          </section>
         </section>
-        <section>
-            <h3>Cloud Foundry <span class="orange">Architecture</span></h3>
 
-            <img src="img/cf-architecture.png" class="transparent"/>
+        <section>
+          <section>
+            <h1><span class="blue">Flocker</span></h1>
+            <img src="img/flocker.svg" class="transparent" width="500" />
+            <p>Data Volume Manager</p>
+          </section>
         </section>
+
         <section>
-            <h3>Deploying to Cloud Foundry can be <span class="blue">very simple</span></h3>
-
-            <pre>
-                <code class="bash">
-                    $ cf login -a api.run.pivotal.io
-
-                    $ git clone https://github.com/cloudfoundry-samples/sample_app
-
-                    $ cd sample_app/
-
-                    $ cf create-service postgresql turtle rails-postgres
-
-                    $ cf push
-                </code>
-            </pre>
+            <section>
+                <img src="img/docker-security.png" class="transparent" width="500" />
+            </section>
+            <section>
+                <h3><span class="blue">Container Security</span></h3>
+                <p class="fragment">Isolation</p>
+                <p class="fragment">Dependencies</p>
+                <p class="fragment">Seccomp profiles</p>
+                <p class="fragment">Coming soon: Unikernels</p>
+                <p class="fragment"><span class="red">Security patches</span></p>
+            </section>
+            <section>
+              <h3><span class="blue">Node Security</span></h3>
+              <p class="fragment">Daemon must run as <span class="red">root</span></p>
+              <p class="fragment">Default authorization is all or nothing</p>
+              <p class="fragment">Authorization plugins</p>
+            </section>
         </section>
-        <section>
-            <h3>Live Demo of Pivotal Web Services</h3>
 
-            <img src="img/pivotal-ws.png" class="transparent"/>
+        <section>
+          <section>
+            <h1>Roadmap</h1>
+            <img src="img/roadmap.png" class="transparent" />
+          </section>
         </section>
+
         <section>
-            <h3>What's <span class="orange">Next</span></h3>
-
-            <img src="img/calendar.png" class="transparent"/>
-
-            <p><span class="blue">15th of February</span>: CloudFoundry for <span class="orange">Devs</span></p>
-
-            <p><span class="blue">TBD</span>: Cloud Foundry for <span class="orange">Ops</span></p>
-        </section>
-        <section>
-            <h3>More Information</h3>
-
-            <p><a href="https://docs.cloudfoundry.org">Cloud Foundry Documentation</a></p>
-
-            <p><a href="https://bosh.io">Bosh Homepage</a></p>
-
-            <p><a href="https://run.pivotal.io/">Pivotal Web Services</a></p>
-        </section>
-        <section>
-            <h3>THANK YOU !</h3>
-
-            <img src="img/leonardo.gif" class="transparent">
-
-            <div>
+          <section>
+          <h1>Thank You!</h1>
+          <img src="img/docker-friends2.png" class="transparent" width="200"/>
+          <div>
                 <h5>
-                    <p>Cloud and PaaS Competence Center</p>
+                    <p>Automation &amp; Tooling Competence Center</p>
 
                     <p>© 2016 <span class="orange">JWorks</span></p>
 
                     <img src="img/ordina-logo.png" class="transparent" style="width: 20%"/>
                 </h5>
-            </div>
+
         </section>
+
     </div>
 </div>
 <script src="lib/js/head.min.js"></script>
